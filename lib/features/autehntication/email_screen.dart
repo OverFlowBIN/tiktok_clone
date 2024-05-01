@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/autehntication/widgets/form_button.dart';
-import 'email_screen.dart';
 
-class UsernameScreen extends StatefulWidget {
-  const UsernameScreen({super.key});
+class EmailScreen extends StatefulWidget {
+  const EmailScreen({super.key});
 
   @override
-  State<UsernameScreen> createState() => _UsernameScreenState();
+  State<EmailScreen> createState() => _UsernameScreenState();
 }
 
-class _UsernameScreenState extends State<UsernameScreen> {
+class _UsernameScreenState extends State<EmailScreen> {
   final TextEditingController _usernameController = TextEditingController();
 
   String _username = '';
@@ -37,8 +36,6 @@ class _UsernameScreenState extends State<UsernameScreen> {
   }
 
   void _onNextTap() {
-    if (_username.isEmpty) return;
-    // StatefulWidget 안의 State 안에 있다면 어디서든 context를 사용할 수 있습니다.
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const EmailScreen(),
@@ -61,26 +58,17 @@ class _UsernameScreenState extends State<UsernameScreen> {
           children: [
             Gaps.v40,
             const Text(
-              'Create username',
+              'Wait is your email?',
               style: TextStyle(
                 fontSize: Sizes.size20,
                 fontWeight: FontWeight.w700,
-              ),
-            ),
-            Gaps.v8,
-            const Text(
-              'You can always change it later.',
-              style: TextStyle(
-                fontSize: Sizes.size16,
-                color: Colors.black54,
-                fontWeight: FontWeight.w600,
               ),
             ),
             Gaps.v16,
             TextField(
               controller: _usernameController,
               decoration: InputDecoration(
-                hintText: 'Username',
+                hintText: 'Email',
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.grey.shade400,

@@ -36,15 +36,6 @@ class _EmailScreenState extends State<EmailScreen> {
     super.dispose();
   }
 
-  void _onNextTap() {
-    if (_email.isEmpty) return;
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const EmailScreen(),
-      ),
-    );
-  }
-
   String? _isEmailValid() {
     if (_email.isEmpty) return null;
     final regExp = RegExp(

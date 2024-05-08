@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tiktok_clone/features/autehntication/widgets/form_button.dart';
 import '../../constants/gaps.dart';
 import '../../constants/sizes.dart';
+import '../onboarding/interests_screen.dart';
 
 class LoginFormScreen extends StatefulWidget {
   const LoginFormScreen({super.key});
@@ -22,7 +23,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
       if (_formKey.currentState!.validate()) {
         // save()는 FormField의 onSaved를 호출합니다.
         _formKey.currentState!.save();
-        print(_formData);
+
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const InterestsScreen(),
+          ),
+        );
       }
     }
   }
@@ -51,6 +57,9 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   // validator는 value(text)값 을 받아서 _onSubmit에서 진행되는
                   // _formKey.currentState?.validate(); 에서 사용됩니다.
                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your email";
+                    }
                     return null;
                   },
                   onSaved: (newValue) {
@@ -65,6 +74,9 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                     hintText: "Password",
                   ),
                   validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your password";
+                    }
                     return null;
                   },
                   onSaved: (newValue) {

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
@@ -125,21 +126,12 @@ class InterestsScreen extends StatelessWidget {
             left: Sizes.size24,
             right: Sizes.size24,
           ),
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: Sizes.size20,
-            ),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-            ),
-            child: const Text(
-              "NEXT",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: Sizes.size16,
-              ),
-            ),
+          // CupertinoButton을 이용하여 빠르게 버튼을 만들 수 있다. (Apple style)
+          // TextButton을 사용하면 Google style의 버튼을 만들 수 있다.
+          child: CupertinoButton(
+            onPressed: () {},
+            color: Theme.of(context).primaryColor,
+            child: const Text('Next'),
           ),
         ),
       ),

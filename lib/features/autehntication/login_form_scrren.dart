@@ -24,10 +24,14 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
         // save()는 FormField의 onSaved를 호출합니다.
         _formKey.currentState!.save();
 
-        Navigator.of(context).push(
+        // route는 이전의 route history를 가지고 있다.
+        // pushAndRemoveUntil를 통해 히스토리를 모드 지우고 새로운 페이지를 갈 떄
+        // appBar의 뒤로가기 버튼은 없어진다.(history가 없으면 버튼이 사라진다)
+        Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const InterestsScreen(),
           ),
+          (route) => false,
         );
       }
     }

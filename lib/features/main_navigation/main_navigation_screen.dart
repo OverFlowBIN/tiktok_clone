@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -32,26 +33,33 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: screens[_selectIndex],
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: _selectIndex,
-          onDestinationSelected: _onTap,
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          destinations: const [
-            NavigationDestination(
-              icon: FaIcon(FontAwesomeIcons.house),
-              label: "Home",
+    // CupertinoTabScaffold를 사용하게 되면, index값을 따로 수정해줄 필요가 없다.
+    // Cupertino 테마를 올바르게 사용하기 위해서는 main.dart에서 MaterialApp을 CupertinoApp으로 변경해서 사용해야 한다.
+    return CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              // CupertinoIcons를 사용하게 되면 조금 더 IOS 처럼 표현된다
+              CupertinoIcons.house,
+              semanticLabel: "Home",
             ),
-            NavigationDestination(
-              icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-              label: "Search",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              CupertinoIcons.search,
+              semanticLabel: "Search",
             ),
-            NavigationDestination(
-              icon: FaIcon(FontAwesomeIcons.star),
-              label: "Setting",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              CupertinoIcons.settings,
+              semanticLabel: "Setting",
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+      tabBuilder: (context, index) => screens[index],
+    );
   }
 }

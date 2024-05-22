@@ -35,8 +35,32 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
     // Cupertino 테마를 올바르게 사용하기 위해서는 main.dart에서 MaterialApp을 CupertinoApp으로 변경해서 사용해야 한다.
     return Scaffold(
       // screens.elementAt(_selectIndex) 과 같이 진행될때는 이전 화면이 뭐였든지 다 지워버리고 있다
-      // 항상 선택된 화면만 보여주고 있다. 
-      body: screens.elementAt(_selectIndex),
+      // 항상 선택된 화면만 보여주고 있다.
+      // body: screens.elementAt(_selectIndex),
+
+      body: Stack(
+        children: [
+          // Offstage를 사용하게 되면, 화면을 미리 로딩해놓을 수 있고, 화면을 전환할때 이전의 state를 그대로 유지할 수 있다.
+          // 사용자가 해당 화면을 들어오거나 나갔을때는 감지하여 특정 기능을 실행할 수 있다.
+          // 하지만, Offstage를 사용하게 되면, 화면이 미리 로딩되어 있기 때문에 메모리를 많이 사용하게 된다.
+          Offstage(
+            offstage: _selectIndex != 0,
+            child: const StfScreen(),
+          ),
+          Offstage(
+            offstage: _selectIndex != 1,
+            child: const StfScreen(),
+          ),
+          Offstage(
+            offstage: _selectIndex != 3,
+            child: const StfScreen(),
+          ),
+          Offstage(
+            offstage: _selectIndex != 4,
+            child: const StfScreen(),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.black,
         child: Padding(

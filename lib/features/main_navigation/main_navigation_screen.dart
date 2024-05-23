@@ -1,8 +1,15 @@
+import 'dart:html';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/stf_screen.dart';
+
+import '../../constants/gaps.dart';
+import 'widgets/post_video_button.dart';
 
 class MainNavigationNavogation extends StatefulWidget {
   const MainNavigationNavogation({super.key});
@@ -27,6 +34,20 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
     setState(() {
       _selectIndex = index;
     });
+  }
+
+  void _onPostVideoButtonTap() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: const Text("Record Video"),
+          ),
+        ),
+        // fullscreenDialog: true를 사용하게 되면, 화면이 전체로 나타나게 된다.
+        fullscreenDialog: true,
+      ),
+    );
   }
 
   @override
@@ -69,6 +90,7 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               NavTab(
                 text: "Home",
@@ -84,6 +106,10 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
                 icon: FontAwesomeIcons.compass,
                 selectedIcon: FontAwesomeIcons.solidCompass,
               ),
+              Gaps.h24,
+              GestureDetector(
+                  onTap: _onPostVideoButtonTap, child: const PostVideoButton()),
+              Gaps.h24,
               NavTab(
                 text: "Inbox",
                 onTap: () => _onTap(3),

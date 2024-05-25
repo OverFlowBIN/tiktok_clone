@@ -1,14 +1,9 @@
-import 'dart:html';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/nav_tab.dart';
-import 'package:tiktok_clone/features/main_navigation/widgets/stf_screen.dart';
-
 import '../../constants/gaps.dart';
+import '../videos/video_timeline_widget.dart';
 import 'widgets/post_video_button.dart';
 
 class MainNavigationNavogation extends StatefulWidget {
@@ -21,14 +16,6 @@ class MainNavigationNavogation extends StatefulWidget {
 
 class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
   int _selectIndex = 0;
-
-  final screens = [
-    StfScreen(key: GlobalKey()),
-    StfScreen(key: GlobalKey()),
-    Container(),
-    StfScreen(key: GlobalKey()),
-    StfScreen(key: GlobalKey()),
-  ];
 
   void _onTap(int index) {
     setState(() {
@@ -66,19 +53,19 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
           // 하지만, Offstage를 사용하게 되면, 화면이 미리 로딩되어 있기 때문에 메모리를 많이 사용하게 된다.
           Offstage(
             offstage: _selectIndex != 0,
-            child: const StfScreen(),
+            child: const VedioTimelineScreen(),
           ),
           Offstage(
             offstage: _selectIndex != 1,
-            child: const StfScreen(),
+            child: Container(),
           ),
           Offstage(
             offstage: _selectIndex != 3,
-            child: const StfScreen(),
+            child: Container(),
           ),
           Offstage(
             offstage: _selectIndex != 4,
-            child: const StfScreen(),
+            child: Container(),
           ),
         ],
       ),

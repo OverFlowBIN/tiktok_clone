@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_post.dart';
+import 'package:video_player/video_player.dart';
 
 class VedioTimelineScreen extends StatefulWidget {
   const VedioTimelineScreen({super.key});
@@ -8,8 +10,11 @@ class VedioTimelineScreen extends StatefulWidget {
 }
 
 class _VedioTimelineScreenState extends State<VedioTimelineScreen> {
-  final PageController _pageController = PageController();
   int _itemCount = 4;
+
+  final PageController _pageController = PageController();
+  final Duration _scrollDuration = const Duration(milliseconds: 250);
+  final Curve _scrollCurve = Curves.linear;
 
   final List<Color> _colors = [
     Colors.blue,
@@ -21,8 +26,8 @@ class _VedioTimelineScreenState extends State<VedioTimelineScreen> {
   void _onPageChanged(int index) {
     _pageController.animateToPage(
       index,
-      duration: const Duration(milliseconds: 5),
-      curve: Curves.linear,
+      duration: _scrollDuration,
+      curve: _scrollCurve,
     );
     if (index == _itemCount - 1) {
       _itemCount = _itemCount + 4;
@@ -38,6 +43,16 @@ class _VedioTimelineScreenState extends State<VedioTimelineScreen> {
     }
   }
 
+  void _onVideoFinished() {
+    _pageController.nextPage(duration: _scrollDuration, curve: _scrollCurve);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // PageView를 사용하면 스크롤 가능한 화면을 만들 수 있습니다.
@@ -47,17 +62,8 @@ class _VedioTimelineScreenState extends State<VedioTimelineScreen> {
       scrollDirection: Axis.vertical,
       onPageChanged: _onPageChanged,
       itemCount: _colors.length,
-      itemBuilder: (context, index) => Container(
-        color: _colors[index],
-        child: Center(
-          child: Text(
-            'Page $index',
-            style: const TextStyle(
-              fontSize: 40,
-            ),
-          ),
-        ),
-      ),
+      itemBuilder: (context, index) =>
+          VideoPost(onVideoFinished: _onVideoFinished),
     );
   }
 }

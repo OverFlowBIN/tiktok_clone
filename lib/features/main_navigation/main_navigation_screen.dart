@@ -45,7 +45,7 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
       // screens.elementAt(_selectIndex) 과 같이 진행될때는 이전 화면이 뭐였든지 다 지워버리고 있다
       // 항상 선택된 화면만 보여주고 있다.
       // body: screens.elementAt(_selectIndex),
-
+      backgroundColor: _selectIndex == 0 ? Colors.black : Colors.white,
       body: Stack(
         children: [
           // Offstage를 사용하게 되면, 화면을 미리 로딩해놓을 수 있고, 화면을 전환할때 이전의 state를 그대로 유지할 수 있다.

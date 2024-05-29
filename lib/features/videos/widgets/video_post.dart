@@ -16,9 +16,17 @@ class VideoPost extends StatefulWidget {
   State<VideoPost> createState() => _VideoPostState();
 }
 
-class _VideoPostState extends State<VideoPost> {
+// with SingleTickerProviderStateMixin를 사용하면 애니메이션을 사용할 수 있습니다.
+class _VideoPostState extends State<VideoPost>
+    with SingleTickerProviderStateMixin {
   final VideoPlayerController _videoPlayerController =
       VideoPlayerController.asset("assets/videos/center_of_world.mov");
+
+  bool _isPaused = false;
+
+  final Duration _animationDuration = const Duration(milliseconds: 200);
+
+  late final AnimationController _animationController;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -40,6 +48,20 @@ class _VideoPostState extends State<VideoPost> {
   void initState() {
     super.initState();
     _initVideoPlayer();
+
+    _animationController = AnimationController(
+      vsync: this,
+      // lowerBound와 upperBound는 scale의 최소, 최대값을 의미합니다.
+      lowerBound: 1.0,
+      upperBound: 1.5,
+      // value는 scale의 초기값을 의미합니다.
+      value: 1.5,
+      duration: _animationDuration,
+    );
+    // _animationController의 변경이 있을 때마다 화면을 다시 그리도록 합니다. (강제 build)
+    _animationController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -57,9 +79,14 @@ class _VideoPostState extends State<VideoPost> {
   void _onTogglePause() {
     if (_videoPlayerController.value.isPlaying) {
       _videoPlayerController.pause();
+      _animationController.reverse();
     } else {
       _videoPlayerController.play();
+      _animationController.forward();
     }
+    setState(() {
+      _isPaused = !_isPaused;
+    });
   }
 
   @override
@@ -87,14 +114,21 @@ class _VideoPostState extends State<VideoPost> {
               onTap: _onTogglePause,
             ),
           ),
-          const Positioned.fill(
+          Positioned.fill(
               // IgnorePointer는 자식 위젯에게 터치 이벤트를 무시하도록 합니다.
               child: IgnorePointer(
             child: Center(
-              child: FaIcon(
-                FontAwesomeIcons.play,
-                color: Colors.white,
-                size: Sizes.size52,
+              child: Transform.scale(
+                scale: _animationController.value,
+                child: AnimatedOpacity(
+                  opacity: _isPaused ? 1 : 0,
+                  duration: _animationDuration,
+                  child: const FaIcon(
+                    FontAwesomeIcons.play,
+                    color: Colors.white,
+                    size: Sizes.size52,
+                  ),
+                ),
               ),
             ),
           ))

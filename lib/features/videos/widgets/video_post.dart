@@ -16,6 +16,11 @@ class VideoPost extends StatefulWidget {
 }
 
 // with SingleTickerProviderStateMixin를 사용하면 애니메이션을 사용할 수 있습니다.
+// with SingleTickerProviderStateMixin은 해당 class의 프로퍼티와 메소드를 사용할 수 있도록 합니다.(확장하지 않고)
+// SingleTickerProviderStateMixin가 필요한 이유
+// 1. 애니메이션을 사용할 때 TickerProvider를 사용해야 합니다.(프레임 마다 애니메이션을 그리기 위해 필요합니다.)
+// 2. current tree가 활성화 되어있을때만 애니메이션을 그리기 위해 필요합니다.
+// 여러개의 Ticker가 필요하면 TickerProviderStateMixin을 사용합니다.
 class _VideoPostState extends State<VideoPost>
     with SingleTickerProviderStateMixin {
   final VideoPlayerController _videoPlayerController =
@@ -49,6 +54,8 @@ class _VideoPostState extends State<VideoPost>
     _initVideoPlayer();
 
     _animationController = AnimationController(
+      // vsync는 애니메이션이 화면에 그려질 때 애니메이션을 동기화하는 역할을 합니다.
+      // 그리고 offscreen일 때 애니메이션을 멈추는 역할을 합니다.(메모리 절약)
       vsync: this,
       // lowerBound와 upperBound는 scale의 최소, 최대값을 의미합니다.
       lowerBound: 1.0,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-
 import '../../../constants/sizes.dart';
 
 class VideoPost extends StatefulWidget {
@@ -59,9 +58,10 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
     // _animationController의 변경이 있을 때마다 화면을 다시 그리도록 합니다. (강제 build)
-    _animationController.addListener(() {
-      setState(() {});
-    });
+    // AnimationBuilder를 사용하면 setState를 사용하지 않아도 됩니다.
+    // _animationController.addListener(() {
+    //   setState(() {});
+    // });
   }
 
   @override
@@ -118,8 +118,16 @@ class _VideoPostState extends State<VideoPost>
               // IgnorePointer는 자식 위젯에게 터치 이벤트를 무시하도록 합니다.
               child: IgnorePointer(
             child: Center(
-              child: Transform.scale(
-                scale: _animationController.value,
+              child: AnimatedBuilder(
+                animation: _animationController,
+                // builder는 _animationController의 값이 변경될 때마다 호출됩니다.
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _animationController.value,
+                    // child: child는 AnimatedBuilder의 child를 그대로 반환합니다.
+                    child: child,
+                  );
+                },
                 child: AnimatedOpacity(
                   opacity: _isPaused ? 1 : 0,
                   duration: _animationDuration,

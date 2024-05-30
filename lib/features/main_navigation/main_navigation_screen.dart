@@ -42,6 +42,8 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
     // CupertinoTabScaffold를 사용하게 되면, index값을 따로 수정해줄 필요가 없다.
     // Cupertino 테마를 올바르게 사용하기 위해서는 main.dart에서 MaterialApp을 CupertinoApp으로 변경해서 사용해야 한다.
     return Scaffold(
+      // resizeToAvoidBottomInset: false는 키보드가 올라왔을때 화면이 줄어드는 것을 방지한다.
+      resizeToAvoidBottomInset: false,
       // screens.elementAt(_selectIndex) 과 같이 진행될때는 이전 화면이 뭐였든지 다 지워버리고 있다
       // 항상 선택된 화면만 보여주고 있다.
       // body: screens.elementAt(_selectIndex),

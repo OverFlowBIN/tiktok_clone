@@ -117,6 +117,8 @@ class _VideoPostState extends State<VideoPost>
       // backgroundColor: Colors.transparent 는 배경을 투명하게 만듭니다.
       // 이렇게 하면 showModalBottomSheet내에 container를 두고 rouded border를 적용할 수 있습니다.
       backgroundColor: Colors.transparent,
+      // isScrollControlled: true는 BottomSheet가 화면 전체를 차지하도록 합니다.
+      isScrollControlled: true,
     );
   }
 

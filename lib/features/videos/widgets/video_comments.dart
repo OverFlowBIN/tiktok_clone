@@ -14,6 +14,8 @@ class VideoComments extends StatefulWidget {
 class _VideoCommentsState extends State<VideoComments> {
   bool _isWriting = false;
 
+  final ScrollController _scrollController = ScrollController();
+
   void _onClosePressed() {
     Navigator.of(context).pop();
   }
@@ -62,10 +64,14 @@ class _VideoCommentsState extends State<VideoComments> {
           onTap: _stopWritting,
           child: Stack(
             children: [
+              // TODO: ScrollBar 생성하기
+              // ListView.separated에 scrollBar를 추가하려면 ScrollController를 사용해야 한다.
               ListView.separated(
-                padding: const EdgeInsets.symmetric(
-                  vertical: Sizes.size10,
-                  horizontal: Sizes.size16,
+                padding: const EdgeInsets.only(
+                  top: Sizes.size10,
+                  bottom: Sizes.size96 + Sizes.size16,
+                  left: Sizes.size16,
+                  right: Sizes.size16,
                 ),
                 itemCount: 10,
                 separatorBuilder: (context, index) => Gaps.v20,

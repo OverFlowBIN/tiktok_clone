@@ -9,13 +9,16 @@ class NavTab extends StatelessWidget {
       required this.text,
       required this.isSelected,
       required this.icon,
-      required this.onTap, required this.selectedIcon});
+      required this.onTap,
+      required this.selectedIcon,
+      required this.selectIndex});
 
   final String text;
   final bool isSelected;
   final IconData icon;
   final IconData selectedIcon;
   final Function onTap;
+  final int selectIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class NavTab extends StatelessWidget {
         onTap: () => onTap(),
         // Container를 추가하여 버튼을 클릭할 수 있는 영역을 넓힐 수 있다.
         child: Container(
-          color: Colors.black,
+          color: selectIndex == 0 ? Colors.black : Colors.white,
           child: AnimatedOpacity(
             opacity: isSelected ? 1 : 0.6,
             duration: const Duration(microseconds: 300),
@@ -34,17 +37,17 @@ class NavTab extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 FaIcon(
-                  isSelected ? selectedIcon : icon ,
-                  color: Colors.white,
+                  isSelected ? selectedIcon : icon,
+                  color: selectIndex == 0 ? Colors.white : Colors.black,
                 ),
                 Gaps.v5,
                 Text(
                   text,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: selectIndex == 0 ? Colors.white : Colors.black,
                   ),
                 )
-              ], 
+              ],
             ),
           ),
         ),

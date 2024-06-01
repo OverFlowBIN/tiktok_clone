@@ -90,6 +90,12 @@ class _VideoPostState extends State<VideoPost>
         !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
+    // info.visibleFraction == 0는 화면에 보이지 않는 것을 의미합니다.
+    // info.visibleFraction == 1은 화면에 완전히 보이는 것을 의미합니다.
+
+    if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
+      _videoPlayerController.pause();
+    }
   }
 
   void _onTogglePause() {

@@ -72,7 +72,7 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.black,
+        color: _selectIndex == 0 ? Colors.black : Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(
             Sizes.size12,
@@ -87,6 +87,7 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
                 isSelected: _selectIndex == 0,
                 icon: FontAwesomeIcons.house,
                 selectedIcon: FontAwesomeIcons.house,
+                selectIndex: _selectIndex,
               ),
               NavTab(
                 text: "Discover",
@@ -94,10 +95,15 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
                 isSelected: _selectIndex == 1,
                 icon: FontAwesomeIcons.compass,
                 selectedIcon: FontAwesomeIcons.solidCompass,
+                selectIndex: _selectIndex,
               ),
               Gaps.h24,
               GestureDetector(
-                  onTap: _onPostVideoButtonTap, child: const PostVideoButton()),
+                onTap: _onPostVideoButtonTap,
+                child: PostVideoButton(
+                  inverted: _selectIndex != 0,
+                ),
+              ),
               Gaps.h24,
               NavTab(
                 text: "Inbox",
@@ -105,6 +111,7 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
                 isSelected: _selectIndex == 3,
                 icon: FontAwesomeIcons.message,
                 selectedIcon: FontAwesomeIcons.solidMessage,
+                selectIndex: _selectIndex,
               ),
               NavTab(
                 text: "User",
@@ -112,6 +119,7 @@ class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
                 isSelected: _selectIndex == 4,
                 icon: FontAwesomeIcons.user,
                 selectedIcon: FontAwesomeIcons.solidUser,
+                selectIndex: _selectIndex,
               ),
             ],
           ),

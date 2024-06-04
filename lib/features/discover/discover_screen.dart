@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 
 import '../../constants/sizes.dart';
 
@@ -57,15 +61,67 @@ class DiscoverScreen extends StatelessWidget {
               // SliverGridDelegateWithFixedCrossAxisCount는 그리드의 가로 길이를 정하는 것입니다.
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: Sizes.size10,
-                mainAxisSpacing: Sizes.size10,
-                childAspectRatio: 9 / 16,
+                crossAxisSpacing: Sizes.size8,
+                mainAxisSpacing: Sizes.size8,
+                childAspectRatio: 9 / 20,
               ),
-              itemBuilder: (context, index) => Container(
-                color: Colors.teal,
-                child: Center(
-                  child: Text("$index"),
-                ),
+              itemBuilder: (context, index) => Column(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 9 / 16,
+                    child: FadeInImage.assetNetwork(
+                        fit: BoxFit.cover,
+                        placeholder: "assets/images/IMG_4774.jpg",
+                        image:
+                            "https://flexible.img.hani.co.kr/flexible/normal/640/484/imgdb/resize/2015/0718/00535983901_20150718.JPG"),
+                  ),
+                  Gaps.v10,
+                  const Text(
+                    "Universe is so big and beautiful. Universe is so big and beautiful.Universe is so big and beautiful.",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: Sizes.size16 + Sizes.size2,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Gaps.v5,
+                  // DefaultTextStyle을 사용하면 해당 영역에 텍스트 스타일을 한번에 적용할 수 있습니다.
+                  DefaultTextStyle(
+                    style: TextStyle(
+                      color: Colors.grey.shade500,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    child: Row(
+                      children: [
+                        const CircleAvatar(
+                          radius: Sizes.size14,
+                          backgroundImage: NetworkImage(
+                              "https://avatars.githubusercontent.com/u/87470206?v=4"),
+                        ),
+                        Gaps.h4,
+                        // Expanded는 오직 해당 Row 내부에서 가능한 최대의 공간을 차지하도록 합니다.
+                        const Expanded(
+                          child: Text(
+                            "OverFlowBIN_TikTok_20240605",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Gaps.h4,
+                        FaIcon(
+                          FontAwesomeIcons.heart,
+                          size: Sizes.size16,
+                          color: Colors.grey.shade500,
+                        ),
+                        Gaps.h2,
+                        const Text(
+                          "1.2M",
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
             for (var tab in tabs.skip(1))

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 
@@ -16,18 +15,53 @@ final tabs = [
   "Brands",
 ];
 
-class DiscoverScreen extends StatelessWidget {
+class DiscoverScreen extends StatefulWidget {
   const DiscoverScreen({super.key});
+
+  @override
+  State<DiscoverScreen> createState() => _DiscoverScreenState();
+}
+
+class _DiscoverScreenState extends State<DiscoverScreen> {
+  final TextEditingController _searchController =
+      TextEditingController(text: "Initial Text");
+
+  void _onSearchChanged(String value) {
+    print("Search changed: $value");
+  }
+
+  void _onSearchSubmitted(String value) {
+    print("Search Submitted: $value");
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     // DefaultTabController는 탭을 사용할 때 사용하는 위젯입니다.
+
+    // TODO
+    // 1. Tab이동 시 키보드 내려가는 기능
+    // 2. CupertinoInputField 대신 customer inputfiled를 만들어보고 동일한 기능 구현하기
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
+        // resizeToAvoidBottomInset는 키보드가 나타날 때 화면이 줄어드는 것을 막아줍니다.
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 1,
-          title: const Text('Discover'),
+          title: CupertinoSearchTextField(
+            // CupertinoSearchTextField는 iOS의 검색창을 구현한 위젯입니다.
+            // CupertinoSearchTextField의 텍스트 커서 색상 변경은 불가하므로,
+            // main.dart에서 테마(전체 inputFiled)를 변경해야 한다.
+            controller: _searchController,
+            onChanged: _onSearchChanged,
+            onSubmitted: _onSearchSubmitted,
+          ),
           bottom: TabBar(
             padding: const EdgeInsets.symmetric(
               horizontal: Sizes.size16,
@@ -52,10 +86,10 @@ class DiscoverScreen extends StatelessWidget {
             // GridView는 모든 아이템을 한 번에 생성하기 때문에 성능이 떨어질 수 있습니다.
             // 하지만, GridView.builder는 스크롤을 할 때 아이템을 생성하기 때문에 성능이 좋습니다.
             GridView.builder(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.all(
                 Sizes.size6,
               ),
-
               itemCount: 20,
               // gridDelegate는 그리드의 모양을 정하는 것입니다.
               // SliverGridDelegateWithFixedCrossAxisCount는 그리드의 가로 길이를 정하는 것입니다.
@@ -67,13 +101,23 @@ class DiscoverScreen extends StatelessWidget {
               ),
               itemBuilder: (context, index) => Column(
                 children: [
-                  AspectRatio(
-                    aspectRatio: 9 / 16,
-                    child: FadeInImage.assetNetwork(
-                        fit: BoxFit.cover,
-                        placeholder: "assets/images/IMG_4774.jpg",
-                        image:
-                            "https://flexible.img.hani.co.kr/flexible/normal/640/484/imgdb/resize/2015/0718/00535983901_20150718.JPG"),
+                  Container(
+                    // clipBehavior를 사용하지 않으면 이미지가 컨테이너를 벗어나게 되어,
+                    // borderRadius가 적용되지 않습니다.
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        Sizes.size4,
+                      ),
+                    ),
+                    child: AspectRatio(
+                      aspectRatio: 9 / 16,
+                      child: FadeInImage.assetNetwork(
+                          fit: BoxFit.cover,
+                          placeholder: "assets/images/IMG_4774.jpg",
+                          image:
+                              "https://flexible.img.hani.co.kr/flexible/normal/640/484/imgdb/resize/2015/0718/00535983901_20150718.JPG"),
+                    ),
                   ),
                   Gaps.v10,
                   const Text(

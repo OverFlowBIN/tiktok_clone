@@ -151,6 +151,7 @@ class _VideoCommentsState extends State<VideoComments> {
                               // minLines: null, maxLines: null로 설정하면 TextField의 높이가 자동으로 조절된다.
                               minLines: null,
                               maxLines: null,
+                              // textInputAction은 키보드의 완료 버튼을 설정한다.
                               textInputAction: TextInputAction.newline,
                               cursorColor: Theme.of(context).primaryColor,
                               decoration: InputDecoration(
@@ -159,6 +160,7 @@ class _VideoCommentsState extends State<VideoComments> {
                                   borderRadius: BorderRadius.circular(
                                     Sizes.size12,
                                   ),
+                                  //borderSide는 TextField의 테두리를 설정한다.
                                   borderSide: BorderSide.none,
                                 ),
                                 filled: true,

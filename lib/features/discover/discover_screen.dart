@@ -22,9 +22,27 @@ class DiscoverScreen extends StatefulWidget {
   State<DiscoverScreen> createState() => _DiscoverScreenState();
 }
 
-class _DiscoverScreenState extends State<DiscoverScreen> {
-  final TextEditingController _searchController =
-      TextEditingController(text: "Initial Text");
+class _DiscoverScreenState extends State<DiscoverScreen>
+    with SingleTickerProviderStateMixin {
+  // SingleTickerProviderStateMixin은 애니메이션을 사용할 때 사용하는 Mixin입니다.
+  // TabController를 사용할 때는 SingleTickerProviderStateMixin을 사용해야 합니다.
+
+  final TextEditingController _searchController = TextEditingController();
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: tabs.length, vsync: this);
+
+    // 탭 변경 시 호출되는 콜백
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        // 포커스를 제거하여 키보드를 닫음
+        FocusScope.of(context).unfocus();
+      }
+    });
+  }
 
   void _onSearchChanged(String value) {
     print("Search changed: $value");
@@ -37,6 +55,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   @override
   void dispose() {
     _searchController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -44,9 +63,6 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   Widget build(BuildContext context) {
     // DefaultTabController는 탭을 사용할 때 사용하는 위젯입니다.
 
-    // TODO
-    // 1. Tab이동 시 키보드 내려가는 기능
-    // 2. CupertinoInputField 대신 customer inputfiled를 만들어보고 동일한 기능 구현하기
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
@@ -54,15 +70,49 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 1,
-          title: CupertinoSearchTextField(
-            // CupertinoSearchTextField는 iOS의 검색창을 구현한 위젯입니다.
-            // CupertinoSearchTextField의 텍스트 커서 색상 변경은 불가하므로,
-            // main.dart에서 테마(전체 inputFiled)를 변경해야 한다.
-            controller: _searchController,
-            onChanged: _onSearchChanged,
-            onSubmitted: _onSearchSubmitted,
+          title: SizedBox(
+            height: Sizes.size36,
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                // contentPadding는 TextField의 내부 여백을 설정합니다.
+                contentPadding: const EdgeInsets.symmetric(
+                    vertical: Sizes.size10, horizontal: Sizes.size2),
+                // isDense는 TextField의 여백을 줄여주는 역할을 합니다.
+                // isDense: true,
+                fillColor: Colors.grey.shade200,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(Sizes.size8),
+                ),
+                hintText: "Search",
+                prefixIcon: Icon(Icons.search, color: Colors.grey.shade500),
+                suffixIcon: IconButton(
+                  icon: FaIcon(
+                    FontAwesomeIcons.solidCircleXmark,
+                    color: Colors.grey.shade500,
+                    size: Sizes.size16,
+                  ),
+                  onPressed: () {
+                    _searchController.clear();
+                  },
+                ),
+              ),
+              onChanged: _onSearchChanged,
+              onSubmitted: _onSearchSubmitted,
+            ),
           ),
+          // title: CupertinoSearchTextField(
+          //   // CupertinoSearchTextField는 iOS의 검색창을 구현한 위젯입니다.
+          //   // CupertinoSearchTextField의 텍스트 커서 색상 변경은 불가하므로,
+          //   // main.dart에서 테마(전체 inputFiled)를 변경해야 한다.
+          //   controller: _searchController,
+          //   onChanged: _onSearchChanged,
+          //   onSubmitted: _onSearchSubmitted,
+          // ),
           bottom: TabBar(
+            controller: _tabController,
             padding: const EdgeInsets.symmetric(
               horizontal: Sizes.size16,
             ),

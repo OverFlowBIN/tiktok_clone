@@ -62,7 +62,6 @@ class _DiscoverScreenState extends State<DiscoverScreen>
   @override
   Widget build(BuildContext context) {
     // DefaultTabController는 탭을 사용할 때 사용하는 위젯입니다.
-
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(

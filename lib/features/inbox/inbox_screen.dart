@@ -5,11 +5,21 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 
+import 'activity_screen.dart';
+
 class InboxScreen extends StatelessWidget {
   const InboxScreen({super.key});
 
   void _onDmPressed() {
     print("DM Pressed");
+  }
+
+  void _onActivityPressed(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const ActivityScreen(),
+      ),
+    );
   }
 
   @override
@@ -31,7 +41,7 @@ class InboxScreen extends StatelessWidget {
       body: ListView(
         children: [
           ListTile(
-            onTap: () {},
+            onTap: () => _onActivityPressed(context),
             title: const Text(
               "Activity",
               style: TextStyle(

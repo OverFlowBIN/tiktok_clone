@@ -19,6 +19,10 @@ class TikTokApp extends StatelessWidget {
     return MaterialApp(
       title: 'TikTok Clone',
       theme: ThemeData(
+        // splashColor: Colors.transparent를 설정함으로서 터치시 효과를 없애줍니다.
+        splashColor: Colors.transparent,
+        // highlightColor: Colors.transparent를 설정함으로서 긴 터치시 효과를 없애줍니다.
+        highlightColor: Colors.transparent,
         scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color(0xFFE9435A),
         textSelectionTheme: const TextSelectionThemeData(

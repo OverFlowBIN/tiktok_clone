@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -10,11 +11,27 @@ class ActivityScreen extends StatefulWidget {
   State<ActivityScreen> createState() => _ActivityScreenState();
 }
 
-class _ActivityScreenState extends State<ActivityScreen> {
+class _ActivityScreenState extends State<ActivityScreen>
+    with SingleTickerProviderStateMixin {
   final List<String> _notification = List.generate(
     20,
     (index) => "${index}h",
   );
+
+  // late를 붙이게 되면 변수를 초기화하지 않아도 됨
+  // SingleTickerProviderStateMixin을 사용하여 AnimationController를 가져왔을 때는
+  // (이렇게 this나, 다른 instance memeber를 참조라는 경우)
+  // late를 붙여야 한다.
+  // 결론적으로 class가 생성되면 AnimationController는 초기화 되지 않은 상태가 되고,
+  // initState에서 초기화가 된다.
+  late final AnimationController _animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 200),
+  );
+
+  // Animation을 사용 하면 setState나, Animation Builder를 사용하지 않아도 된다
+  late final Animation<double> _animation =
+      Tween(begin: 0.0, end: 0.5).animate(_animationController);
 
   void _onDismissed(String notification) {
     print(notification);
@@ -22,11 +39,33 @@ class _ActivityScreenState extends State<ActivityScreen> {
     setState(() {});
   }
 
+  void _onTitleTap() {
+    _animationController.isCompleted
+        ? _animationController.reverse()
+        : _animationController.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("All activity"),
+        title: GestureDetector(
+          onTap: _onTitleTap,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("All activity"),
+              Gaps.h2,
+              RotationTransition(
+                turns: _animation,
+                child: const FaIcon(
+                  FontAwesomeIcons.chevronDown,
+                  size: Sizes.size14,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       // Dismissible은 스와이프로 삭제할 수 있는 위젯
       // 스와이프 방향에 따라 다른 방식의 이벤트를 처리할 수 있음

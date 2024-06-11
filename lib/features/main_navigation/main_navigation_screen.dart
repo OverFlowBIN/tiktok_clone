@@ -8,16 +8,15 @@ import '../../constants/gaps.dart';
 import '../videos/video_timeline_widget.dart';
 import 'widgets/post_video_button.dart';
 
-class MainNavigationNavogation extends StatefulWidget {
-  const MainNavigationNavogation({super.key});
+class MainNavigationScreen extends StatefulWidget {
+  const MainNavigationScreen({super.key});
 
   @override
-  State<MainNavigationNavogation> createState() =>
-      _MainNavigationNavogationState();
+  State<MainNavigationScreen> createState() => _MainNavigationNavogationState();
 }
 
-class _MainNavigationNavogationState extends State<MainNavigationNavogation> {
-  int _selectIndex = 0;
+class _MainNavigationNavogationState extends State<MainNavigationScreen> {
+  int _selectIndex = 3;
 
   void _onTap(int index) {
     setState(() {

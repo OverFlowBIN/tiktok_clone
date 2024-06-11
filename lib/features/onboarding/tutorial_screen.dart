@@ -51,7 +51,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
     // appBar의 뒤로가기 버튼은 없어진다.(history가 없으면 버튼이 사라진다)
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (context) => const MainNavigationNavogation(),
+        builder: (context) => const MainNavigationScreen(),
       ),
       (route) => false,
     );

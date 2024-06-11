@@ -12,6 +12,8 @@ class ActivityScreen extends StatefulWidget {
 
 class _ActivityScreenState extends State<ActivityScreen>
     with SingleTickerProviderStateMixin {
+  // SingleTickerProviderStateMixin를 사용하면 Animation을 다룰 수 있는데, ticker가 리소스를 많이 사용한다.
+  // 하지만, SingleTickerProviderStateMixin를 사용하면, 위젯이 화면에 보이지 않을 때, ticker를 중지시킬 수 있다.(리소스 사용 최적화)
   final List<String> _notification = List.generate(
     20,
     (index) => "${index}h",
@@ -52,7 +54,7 @@ class _ActivityScreenState extends State<ActivityScreen>
   // initState에서 초기화가 된다.
   late final AnimationController _animationController = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 400),
+    duration: const Duration(milliseconds: 200),
   );
 
   // Animation을 사용 하면 setState나, Animation Builder를 사용하지 않아도 된다
@@ -101,6 +103,8 @@ class _ActivityScreenState extends State<ActivityScreen>
             children: [
               const Text("All activity"),
               Gaps.h2,
+              // RotationTransition은 child를 회전시키는 위젯
+              // turns는 회전 각도를 설정할 수 있음
               RotationTransition(
                 turns: _arrowAnimation,
                 child: const FaIcon(
@@ -138,6 +142,7 @@ class _ActivityScreenState extends State<ActivityScreen>
               ),
               Gaps.v14,
               for (var notification in _notification)
+                // Dismissible은 스와이프로 삭제할 수 있는 위젯(왼쪽, 오른쪽으로 스와이프 가능)
                 Dismissible(
                   key: Key(notification),
                   onDismissed: (direction) => _onDismissed(notification),
@@ -219,7 +224,7 @@ class _ActivityScreenState extends State<ActivityScreen>
                 ),
             ],
           ),
-          // SlideTransition은 child를 이동시키는 위젯
+          // AnimatedModalBarrier은 barrier를 애니메이션으로 보여주는 위젯
           if (_showBarrier)
             AnimatedModalBarrier(
               color: _barrierAnimation,
@@ -227,6 +232,7 @@ class _ActivityScreenState extends State<ActivityScreen>
               dismissible: true,
               onDismiss: _toggleAnimations,
             ),
+          // SlideTransition은 child를 이동시키는 위젯
           SlideTransition(
             position: _panelAnimation,
             child: Container(

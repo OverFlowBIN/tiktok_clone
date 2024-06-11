@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -54,7 +52,7 @@ class _ActivityScreenState extends State<ActivityScreen>
   // initState에서 초기화가 된다.
   late final AnimationController _animationController = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 200),
+    duration: const Duration(milliseconds: 400),
   );
 
   // Animation을 사용 하면 setState나, Animation Builder를 사용하지 않아도 된다
@@ -63,6 +61,10 @@ class _ActivityScreenState extends State<ActivityScreen>
   late final Animation<double> _arrowAnimation =
       Tween(begin: 0.0, end: 0.5).animate(_animationController);
 
+  late final Animation<Color?> _barrierAnimation =
+      ColorTween(begin: Colors.transparent, end: Colors.black38)
+          .animate(_animationController);
+
   // Animation<Offset>을 사용하면 SlideTransition을 사용할 수 있다.
   // SlideTransition은 child를 이동시키는 위젯
   late final Animation<Offset> _panelAnimation = Tween(
@@ -70,16 +72,22 @@ class _ActivityScreenState extends State<ActivityScreen>
     end: Offset.zero,
   ).animate(_animationController);
 
+  bool _showBarrier = false;
+
   void _onDismissed(String notification) {
-    print(notification);
     _notification.remove(notification);
     setState(() {});
   }
 
-  void _onTitleTap() {
+  void _toggleAnimations() async {
     _animationController.isCompleted
-        ? _animationController.reverse()
+        // _animationController.reverse()는 Future를 반환하기 때문에 await를 사용할 수 있다.
+        ? await _animationController.reverse()
         : _animationController.forward();
+
+    setState(() {
+      _showBarrier = !_showBarrier;
+    });
   }
 
   @override
@@ -87,7 +95,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _onTitleTap,
+          onTap: _toggleAnimations,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -212,6 +220,13 @@ class _ActivityScreenState extends State<ActivityScreen>
             ],
           ),
           // SlideTransition은 child를 이동시키는 위젯
+          if (_showBarrier)
+            AnimatedModalBarrier(
+              color: _barrierAnimation,
+              // dismissible은 true로 설정하면 barrier를 클릭하면 애니메이션이 실행됨
+              dismissible: true,
+              onDismiss: _toggleAnimations,
+            ),
           SlideTransition(
             position: _panelAnimation,
             child: Container(
